@@ -1,0 +1,129 @@
+body {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  display: flex !important;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.container {
+  flex: 1 !important;
+}
+.navbar {
+  height: 5rem;
+  background-color: #fff;
+}
+.navbar-brand i {
+  font-weight: 400;
+  font-size: 2rem;
+  color: #fe424d;
+}
+.navbar-brand {
+  color: #fe424d !important;
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+  font-family: "Caveat", cursive !important;
+}
+.nav-link {
+  color: #222 !important;
+}
+.f-info-links a {
+  font-size: 1rem;
+  color: #999;
+  text-decoration: none;
+}
+.f-info-links a:hover {
+  text-decoration: underline;
+}
+.f-info-links,
+.f-info-socials,
+.f-info-brand {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.f-info {
+  text-align: center;
+  display: flex;
+  background-color: #ebebeb;
+  height: 8rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: space-evenly;
+}
+.f-info-links {
+  width: 100%;
+}
+.f-info-links a {
+  margin-right: 0.8rem;
+}
+.f-info-socials {
+  cursor: pointer;
+  font-size: 1.5rem;
+  width: 100%;
+  opacity: 0.8;
+}
+.f-info-socials :hover {
+  transform: scale(1.09) !important;
+  color: #000;
+}
+.f-info-socials i {
+  margin-right: 0.6rem;
+}
+.f-info p {
+  margin-right: 0.6rem;
+}
+
+/* carda */
+.listing-link {
+  text-decoration: none !important;
+}
+.card {
+  border: none !important;
+  border-radius: 0.5rem !important;
+  transition: all 0.3s ease-in-out !important;
+  margin-bottom: 2rem;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.25) !important;
+  padding: 0.5rem !important;
+}
+/* .card:hover{
+  transform: scale(1.02) !important;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3) !important;
+} */
+.card-img-top {
+  border-radius: 1rem !important;
+  width: 100% !important;
+  object-fit: cover !important;
+}
+.card-body {
+  padding: 0 !important;
+}
+.card-text p {
+  font-weight: 400 !important;
+}
+.add-btn {
+  background-color: #fe424d !important;
+  border: none !important;
+}
+.show-img {
+  height: 30vh;
+}
+.btns {
+  display: flex !important;
+}
+.show-card {
+  padding: 0.7rem !important;
+  border-radius: 1.5rem !important;
+}
+.makeStaylo {
+  background-color: #eae9e9 !important;
+  color: #000 !important;
+  border-radius: 1.5rem !important;
+  font-weight: 500 !important;
+  margin-right: 1rem !important;
+}
+
+/* map */
+#map {
+  height: 400px !important;
+  width: 42vw !important;
+}
