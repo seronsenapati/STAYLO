@@ -1,21 +1,28 @@
-mapboxgl.accessToken = mapToken;
+if (!mapToken) {
+  console.error("Mapbox token is not available");
+} else {
+  mapboxgl.accessToken = mapToken;
 
-const map = new mapboxgl.Map({
-  container: "map", // container ID
-  style: "mapbox://styles/mapbox/streets-v11", // style URL
-  center: listing.geometry.coordinates, // starting position [lng, lat]
-  zoom: 9, // starting zoom
-});
+  if (listing && listing.geometry && listing.geometry.coordinates) {
+    const map = new mapboxgl.Map({
+      container: "map", // container ID
+      style: "mapbox://styles/mapbox/streets-v11", // style URL
+      center: listing.geometry.coordinates, // starting position [lng, lat]
+      zoom: 9, // starting zoom
+    });
 
-const marker = new mapboxgl.Marker({ color: "#fe424d" })
-  .setLngLat(listing.geometry.coordinates)
-  .setPopup(
-    new mapboxgl.Popup({ offset: 25 }).setHTML(
-      `<h5>${listing.title}</h5><p>Exact Location will be Provied After Booking</p>`
-    )
-  )
-  .addTo(map);
-// mapboxgl.accessToken = mapToken;
+    const marker = new mapboxgl.Marker({ color: "#fe424d" })
+      .setLngLat(listing.geometry.coordinates)
+      .setPopup(
+        new mapboxgl.Popup({ offset: 25 }).setHTML(
+          `<h5>${listing.title}</h5><p>Exact Location will be Provided After Booking</p>`
+        )
+      )
+      .addTo(map);
+  } else {
+    console.error("Listing geometry data is not available");
+  }
+}
 
 // const map = new mapboxgl.Map({
 //   container: "map",

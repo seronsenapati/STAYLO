@@ -7,6 +7,18 @@ module.exports.renderSignupForm = (req, res) => {
 module.exports.signup = async (req, res, next) => {
   try {
     let { username, email, password } = req.body;
+    
+    // Basic validation
+    if (!username || !email || !password) {
+      req.flash("error", "All fields are required");
+      return res.redirect("/signup");
+    }
+    
+    if (password.length < 6) {
+      req.flash("error", "Password must be at least 6 characters long");
+      return res.redirect("/signup");
+    }
+    
     const newUser = new User({ username, email });
     const registeredUser = await User.register(newUser, password);
     req.login(registeredUser, (err) => {

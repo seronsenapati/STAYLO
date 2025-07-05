@@ -3,6 +3,8 @@ class ExpressError extends Error {
     super();
     this.statusCode = statusCode; 
     this.message = message;
+    this.name = this.constructor.name;
+    Error.captureStackTrace(this, this.constructor);
   }
 }
 

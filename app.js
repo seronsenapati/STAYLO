@@ -22,17 +22,22 @@ const userRouter = require("./routes/user.js");
 
 const dbUrl = process.env.ATLASDB_URL;
 
-async function main() {
-  await mongoose.connect(dbUrl);
+if (!dbUrl) {
+  console.error("ATLASDB_URL environment variable is not set");
+  process.exit(1);
 }
 
-main()
-  .then(() => {
+async function main() {
+  try {
+    await mongoose.connect(dbUrl);
     console.log("Connected to MongoDB");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  } catch (err) {
+    console.error("MongoDB connection error:", err);
+    process.exit(1);
+  }
+}
+
+main();
 
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
@@ -44,14 +49,14 @@ app.use(express.static(path.join(__dirname, "/public")));
 const store = MongoStore.create({
   mongoUrl: dbUrl,
   crypto: {
-    secret: process.env.SECRET,
+    secret: process.env.SECRET || "fallback-secret-key",
   },
   touchAfter: 24 * 60 * 60, // 24 hours
 });
 
 const sessionOptions = {
   store,
-  secret: process.env.SECRET,
+  secret: process.env.SECRET || "fallback-secret-key",
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -93,6 +98,7 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render("error.ejs", { err });
 });
 
-app.listen(8080, () => {
-  console.log(`Server is running on port http://localhost:8080/listings`);
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server is running on port http://localhost:${PORT}/listings`);
 });

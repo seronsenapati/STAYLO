@@ -4,8 +4,11 @@
   },
   "name": "staylo",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "setup": "node setup.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Seron Senapati",
@@ -29,5 +32,8 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^8.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
   }
 }

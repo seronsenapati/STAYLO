@@ -6,8 +6,12 @@ const listingSchema = new Schema({
   title: {
     type: String,
     required: true,
+    trim: true,
   },
-  description: String,
+  description: {
+    type: String,
+    trim: true,
+  },
   image: {
     url: String,
     filename: String,
@@ -15,14 +19,17 @@ const listingSchema = new Schema({
   price: {
     type: Number,
     required: true,
+    min: 0,
   },
   location: {
     type: String,
     required: true,
+    trim: true,
   },
   country: {
     type: String,
     required: true,
+    trim: true,
   },
   reviews: [
     {
@@ -33,6 +40,7 @@ const listingSchema = new Schema({
   owner: {
     type: Schema.Types.ObjectId,
     ref: "User",
+    required: true,
   },
   geometry: {
     type: {
@@ -45,7 +53,14 @@ const listingSchema = new Schema({
       required: true,
     },
   },
+}, {
+  timestamps: true,
 });
+
+// Index for better query performance
+listingSchema.index({ geometry: "2dsphere" });
+listingSchema.index({ owner: 1 });
+listingSchema.index({ location: 1 });
 
 listingSchema.post("findOneAndDelete", async function (doc) {
   if (doc) {
