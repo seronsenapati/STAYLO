@@ -2,6 +2,9 @@
 
 A full-stack web application for vacation rentals built with Node.js, Express, MongoDB, and EJS.
 
+**Live Demo: [https://staylo-swvf.onrender.com/listings](https://staylo-swvf.onrender.com/listings)**
+
+
 ## Features
 
 - User authentication and authorization
