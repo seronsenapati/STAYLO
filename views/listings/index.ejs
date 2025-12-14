@@ -1,27 +1,91 @@
 <% layout('/layouts/boilerplate') -%>
-<!-- <h3>All Listings</h3> -->
-<div id="filters">
-  <div class="filter">
-    
+
+<div class="container">
+  <!-- All Properties -->
+  <div class="d-flex justify-content-between align-items-center mb-4 mt-4">
+    <h2>All Properties</h2>
   </div>
-</div>
-<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
-  <% for(let listing of allListings) { %>
-  <a href="/listings/<%= listing._id %>" class="listing-link"
-    ><div class="card col show-card">
-      <img
-        src="<%= listing.image.url %>"
-        class="card-img-top"
-        alt="Listing_img"
-        style="height: 20rem"
-      />
-      <div class="card-body">
-        <p class="card-text">
-          <b><%= listing.title %></b> <br />
-          &#8377;<%= listing.price.toLocaleString("en-IN") %>/night
-        </p>
-      </div>
-    </div></a
-  >
+  
+  <div class="row g-4">
+    <% for(let i = 0; i < Math.min(allListings.length, 8); i++) { 
+      const listing = allListings[i]; %>
+    <div class="col-xxl-3 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+      <a href="/listings/<%= listing._id %>" class="listing-link text-decoration-none">
+        <div class="featured-card">
+          <div class="featured-card-img-wrapper">
+            <img
+              src="<%= listing.image.url || 'https://placehold.co/600x400?text=No+Image+Available' %>"
+              class="featured-card-img img-fluid"
+              alt="<%= listing.title || 'Listing Image' %>"
+              onerror="this.src='https://placehold.co/600x400?text=Image+Not+Found';"
+            />
+          </div>
+          <div class="featured-card-body">
+            <h3 class="featured-card-title"><%= listing.title %></h3>
+            <p class="featured-card-description">
+              <%= listing.description ? listing.description.substring(0, 80) + (listing.description.length > 80 ? '...' : '') : '' %>
+            </p>
+            <div class="featured-card-meta">
+              <div>
+                <div class="featured-card-price">
+                  &#8377;<%= listing.price.toLocaleString("en-IN") %><span class="text-muted small">/night</span>
+                </div>
+                <div class="featured-card-location mt-1">
+                  <i class="ri-map-pin-line"></i>
+                  <span><%= listing.location %></span>
+                </div>
+              </div>
+              <div class="featured-card-rating">
+                <i class="ri-star-fill"></i>
+                <span>4.8</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    <% } %>
+  </div>
+  
+
+  
+  <!-- Pagination -->
+  <% if (totalPages > 1) { %>
+  <nav aria-label="Page navigation" class="mt-5">
+    <ul class="pagination justify-content-center">
+      <% if (hasPrevPage) { %>
+      <li class="page-item">
+        <a class="page-link" href="?page=<%= currentPage - 1 %>" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <% } %>
+      
+      <% for (let i = 1; i <= totalPages; i++) { %>
+      <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+        <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+      </li>
+      <% } %>
+      
+      <% if (hasNextPage) { %>
+      <li class="page-item">
+        <a class="page-link" href="?page=<%= currentPage + 1 %>" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+      <% } %>
+    </ul>
+  </nav>
+  <% } %>
+  
+  <!-- No listings message -->
+  <% if (allListings.length === 0) { %>
+  <div class="text-center py-5">
+    <div class="mb-4">
+      <i class="ri-home-8-line" style="font-size: 4rem; color: var(--primary);"></i>
+    </div>
+    <h3>No listings available yet</h3>
+    <p class="text-muted mb-4">Be the first to <a href="/listings/new">create a listing</a> and start hosting guests!</p>
+  </div>
   <% } %>
 </div>

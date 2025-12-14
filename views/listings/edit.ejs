@@ -1,69 +1,143 @@
 <% layout('/layouts/boilerplate') -%>
-<h3>Edit your Listing</h3>
-<form
-  method="POST"
-  action="/listings/<%= listing._id %>?_method=PUT"
-  novalidate
-  class="needs-validation"
-  enctype="multipart/form-data"
->
-  <div class="mb-3">
-    <label for="title" class="form-label">Title</label>
-    <input
-      type="text"
-      name="listing[title]"
-      value="<%= listing.title %>"
-      required
-      class="form-control"
-    />
-  </div>
-  <div class="mb-3">
-    <label for="description" class="form-label">Description</label>
-    <textarea name="listing[description]" class="form-control">
-<%= listing.description %></textarea
-    >
-  </div>
-  <div class="mb-3">
-    <p>Original Listing Image</p>
-    <img src="<%=originalImageUrl%>" alt="">
-  </div>
-  <div class="mb-3">
-    <label for="image" class="form-label">Image URL/Link</label>
-    <input type="file" name="listing[image]" class="form-control" />
-  </div>
-  <br />
-  <div class="row">
-    <div class="mb-3 col-md-4">
-      <label for="price" class="form-label">Price</label>
-      <input
-        type="number"
-        name="listing[price]"
-        value="<%= listing.price %>"
-        required
-        class="form-control"
-      />
-    </div>
-    <div class="mb-3 col-md-4">
-      <label for="location" class="form-label">Location</label>
-      <input
-        type="text"
-        value="<%= listing.location %>"
-        name="listing[location]"
-        required
-        class="form-control"
-      />
-    </div>
-    <div class="mb-3 col-md-4">
-      <label for="country" class="form-label">Country</label>
-      <input
-        type="text"
-        value="<%= listing.country %>"
-        name="listing[country]"
-        required
-        class="form-control"
-      />
-    </div>
-  </div>
 
-  <button class="btn btn-dark add-btn">UPDATE</button>
-</form>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/listings">Home</a></li>
+          <li class="breadcrumb-item"><a href="/listings/<%= listing._id %>"><%= listing.title %></a></li>
+          <li class="breadcrumb-item active" aria-current="page">Edit</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-lg border-0 rounded-lg">
+        <div class="card-header bg-primary text-white text-center py-4">
+          <h2 class="mb-0">Edit Your Property</h2>
+          <p class="mb-0">Update your listing details to keep information accurate</p>
+        </div>
+        <div class="card-body p-4 p-md-5">
+          <form
+            method="POST"
+            action="/listings/<%= listing._id %>?_method=PUT"
+            novalidate
+            class="needs-validation"
+            enctype="multipart/form-data"
+          >
+            <div class="row">
+              <div class="col-12 mb-4">
+                <h4 class="mb-4 pb-2 border-bottom">Basic Information</h4>
+              </div>
+              
+              <div class="col-12 mb-4">
+                <label for="title" class="form-label">Property Title *</label>
+                <input
+                  type="text"
+                  name="listing[title]"
+                  value="<%= listing.title %>"
+                  required
+                  class="form-control form-control-lg"
+                />
+                <div class="invalid-feedback">
+                  Please provide a title for your listing.
+                </div>
+              </div>
+              
+              <div class="col-12 mb-4">
+                <label for="description" class="form-label">Description</label>
+                <textarea name="listing[description]" class="form-control" rows="5">
+<%= listing.description %></textarea>
+              </div>
+              
+              <div class="col-12 mb-4">
+                <h4 class="mb-4 pb-2 border-bottom">Pricing & Location</h4>
+              </div>
+              
+              <div class="col-md-6 col-sm-12 mb-4">
+                <label for="price" class="form-label">Price per Night (₹) *</label>
+                <div class="input-group">
+                  <span class="input-group-text">₹</span>
+                  <input
+                    type="number"
+                    name="listing[price]"
+                    value="<%= listing.price %>"
+                    required
+                    min="0"
+                    class="form-control form-control-lg"
+                  />
+                </div>
+                <div class="invalid-feedback">
+                  Please enter a valid price.
+                </div>
+              </div>
+              
+              <div class="col-md-6 col-sm-12 mb-4">
+                <label for="location" class="form-label">Location *</label>
+                <input
+                  type="text"
+                  value="<%= listing.location %>"
+                  name="listing[location]"
+                  required
+                  class="form-control form-control-lg"
+                />
+                <div class="invalid-feedback">
+                  Please provide a location.
+                </div>
+              </div>
+              
+              <div class="col-12 mb-4">
+                <label for="country" class="form-label">Country *</label>
+                <input
+                  type="text"
+                  value="<%= listing.country %>"
+                  name="listing[country]"
+                  required
+                  class="form-control form-control-lg"
+                />
+                <div class="invalid-feedback">
+                  Please provide a country.
+                </div>
+              </div>
+              
+              <div class="col-12 mb-4">
+                <h4 class="mb-4 pb-2 border-bottom">Property Images</h4>
+              </div>
+              
+              <div class="col-md-12 mb-4">
+                <label class="form-label">Current Image</label>
+                <div class="text-center mb-3">
+                  <img 
+                    src="<%= originalImageUrl || 'https://placehold.co/400x300?text=No+Image+Available' %>" 
+                    alt="Current Listing Image" 
+                    class="img-fluid rounded"
+                    style="max-height: 300px;"
+                    onerror="this.src='https://placehold.co/400x300?text=Image+Not+Found';"
+                  >
+                </div>
+              </div>
+              
+              <div class="col-12 mb-4">
+                <label for="image" class="form-label">Replace Image</label>
+                <input type="file" name="listing[image]" class="form-control form-control-lg" accept="image/*" />
+                <div class="form-text">Leave blank to keep the current image. Supported formats: JPG, PNG, JPEG (Max 5MB)</div>
+              </div>
+            </div>
+            
+            <div class="d-grid gap-3 d-md-flex justify-content-md-between mt-5 pt-4 border-top">
+              <a href="/listings/<%= listing._id %>" class="btn btn-lg btn-outline-secondary w-100 w-md-auto mb-3 mb-md-0">
+                <i class="ri-arrow-left-line"></i> Back to Listing
+              </a>
+              <button class="btn btn-lg btn-primary w-100 w-md-auto" type="submit">
+                <i class="ri-save-line"></i> Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

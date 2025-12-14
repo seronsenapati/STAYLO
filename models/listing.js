@@ -61,6 +61,9 @@ const listingSchema = new Schema({
 listingSchema.index({ geometry: "2dsphere" });
 listingSchema.index({ owner: 1 });
 listingSchema.index({ location: 1 });
+listingSchema.index({ country: 1 });
+listingSchema.index({ price: 1 });
+listingSchema.index({ title: "text", description: "text" });
 
 listingSchema.post("findOneAndDelete", async function (doc) {
   if (doc) {

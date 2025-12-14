@@ -1,31 +1,147 @@
-<nav
-  class="navbar navbar-expand-md bg-body-light border-bottom shadow-sm mb-3 sticky-top"
->
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/listings"
-      ><i class="ri-compass-discover-fill"></i>StayLo</a
-    >
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarNavAltMarkup"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link" href="/listings">Explore</a>
+<nav class="navbar navbar-expand-lg navbar-light sticky-top">
+  <div class="container-fluid px-3 px-lg-4">
+    <a class="navbar-brand d-flex align-items-center" href="/listings">
+      <i class="ri-compass-discover-fill me-2" style="font-size: 2rem;"></i>
+      <span class="brand-text fw-bold" style="font-size: 2rem;">StayLo</span>
+    </a>
+    
+    <!-- Modern Hamburger Menu -->
+    <div class="modern-hamburger-menu">
+      <input type="checkbox" id="menu-toggle" class="menu-checkbox" aria-label="Toggle navigation menu">
+      <label for="menu-toggle" class="menu-button" aria-label="Navigation menu">
+        <span class="hamburger-line line-top"></span>
+        <span class="hamburger-line line-middle"></span>
+        <span class="hamburger-line line-bottom"></span>
+      </label>
+      
+      <div class="menu-panel">
+        <div class="menu-content">
+          <div class="menu-header">
+            <a class="navbar-brand-mobile" href="/listings">
+              <i class="ri-compass-discover-fill me-2" style="font-size: 2rem; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"></i>
+              <span class="brand-text fw-bold" style="font-size: 2rem; font-family: 'Caveat', cursive;">StayLo</span>
+            </a>
+            <label for="menu-toggle" class="close-menu">
+              <i class="ri-close-line"></i>
+            </label>
+          </div>
+          
+          <div class="menu-links">
+            <a class="menu-link" href="/listings">
+              <i class="ri-search-line me-2"></i>
+              <span>Explore</span>
+            </a>
+            
+            <a class="menu-link" href="/listings/new">
+              <i class="ri-add-line me-2"></i>
+              <span>Make your home StayLo</span>
+            </a>
+            
+            <% if (!currUser) { %>
+            <a class="menu-link" href="/signup">
+              <i class="ri-user-add-line me-2"></i>
+              <span>Sign Up</span>
+            </a>
+            <a class="menu-link menu-link-button" href="/login">
+              <i class="ri-login-box-line me-2"></i>
+              <span>Log In</span>
+            </a>
+            <% } %>
+            
+            <% if (currUser) { %>
+            <div class="user-menu-section">
+              <div class="user-info">
+                <i class="ri-user-line me-2"></i>
+                <span><%= currUser.username %></span>
+              </div>
+              <a class="menu-link" href="/logout">
+                <i class="ri-logout-box-line me-2"></i>
+                <span>Logout</span>
+              </a>
+            </div>
+            <% } %>
+          </div>
+        </div>
       </div>
-      <div class="navbar-nav ms-auto">
-        <a class="nav-link makeStaylo" href="/listings/new">Make your home Staylo</a>
+    </div>
+    
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav me-auto mb-2 mb-lg-0">
+        <a class="nav-link d-flex align-items-center" href="/listings">
+          <i class="ri-search-line me-1"></i>
+          <span class="nav-text">Explore</span>
+        </a>
+      </div>
+      
+      <div class="navbar-nav ms-auto d-flex align-items-center" style="gap: 0.5rem;">
+        <a class="nav-link d-flex align-items-center" href="/listings/new">
+          <i class="ri-add-line me-1"></i>
+          <span class="nav-text d-none d-lg-inline">Make your home StayLo</span>
+          <span class="nav-text d-lg-none">Host</span>
+        </a>
+        
         <% if (!currUser) { %>
-        <a class="nav-link" href="/signup"><b>Sign Up</b></a>
-        <a class="nav-link" href="/login"><b>Log In</b></a>
-        <% } %> <% if (currUser) { %>
-        <a class="nav-link" href="/logout"><b>Log Out</b></a>
+        <a class="nav-link d-flex align-items-center" href="/signup">
+          <i class="ri-user-add-line me-1"></i>
+          <span class="nav-text">Sign Up</span>
+        </a>
+        <a class="nav-link btn btn-sm btn-outline-primary rounded-pill d-flex align-items-center" href="/login">
+          <i class="ri-login-box-line me-1"></i>
+          <span class="nav-text">Log In</span>
+        </a>
+        <% } %>
+        
+        <% if (currUser) { %>
+        <div class="nav-item dropdown">
+          <a 
+            class="nav-link dropdown-toggle d-flex align-items-center" 
+            href="#" 
+            id="navbarDropdown" 
+            role="button" 
+            data-bs-toggle="dropdown" 
+            aria-expanded="false"
+          >
+            <i class="ri-user-line me-1"></i>
+            <span class="nav-text d-none d-md-inline"><%= currUser.username %></span>
+            <span class="nav-text d-md-none"><%= currUser.username.substring(0, 10) %><% if (currUser.username.length > 10) { %>...<% } %></span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="/logout"><i class="ri-logout-box-line me-2"></i>Logout</a></li>
+          </ul>
+        </div>
         <% } %>
       </div>
     </div>
   </div>
+  
+  <!-- Close menu when clicking outside -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuToggle = document.getElementById('menu-toggle');
+      const menuPanel = document.querySelector('.menu-panel');
+      const closeMenu = document.querySelector('.close-menu');
+      
+      if (menuToggle && menuPanel) {
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+          // Check if click is outside the menu panel
+          if (menuToggle.checked && 
+              !menuPanel.contains(event.target) && 
+              event.target.id !== 'menu-toggle' &&
+              event.target.className !== 'menu-button' &&
+              (!closeMenu || !closeMenu.contains(event.target))) {
+            menuToggle.checked = false;
+          }
+        });
+        
+        // Close menu when clicking on menu links
+        const menuLinks = document.querySelectorAll('.menu-link');
+        menuLinks.forEach(link => {
+          link.addEventListener('click', function() {
+            menuToggle.checked = false;
+          });
+        });
+      }
+    });
+  </script>
 </nav>

@@ -29,5 +29,6 @@ const reviewSchema = new Schema({
 // Index for better query performance
 reviewSchema.index({ author: 1 });
 reviewSchema.index({ createdAt: -1 });
+reviewSchema.index({ rating: 1 });
 
 module.exports = mongoose.model("Review", reviewSchema);

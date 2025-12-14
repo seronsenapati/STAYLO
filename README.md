@@ -4,15 +4,30 @@ A full-stack web application for vacation rentals built with Node.js, Express, M
 
 **Live Demo: [https://staylo-swvf.onrender.com/listings](https://staylo-swvf.onrender.com/listings)**
 
+## Table of Contents
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Environment Variables](#environment-variables)
+- [Project Structure](#project-structure)
+- [API Endpoints](#api-endpoints)
+- [Testing](#testing)
+- [Technologies Used](#technologies-used)
+- [Security Considerations](#security-considerations)
+- [License](#license)
+- [Author](#author)
 
 ## Features
 
-- User authentication and authorization
+- User authentication and authorization (Passport.js)
 - Create, read, update, and delete vacation listings
-- Image upload with Cloudinary
+- Image upload with Cloudinary integration
 - Interactive maps with Mapbox
 - Review system with ratings
-- Responsive design with Bootstrap
+- Responsive design with Bootstrap 5
+- Form validation with Joi
+- Error handling and flash messaging
+- Comprehensive test suite with Jest
 
 ## Prerequisites
 
@@ -68,14 +83,16 @@ npm run dev
 
 ## Environment Variables
 
-- `ATLASDB_URL`: MongoDB connection string
-- `SECRET`: Session secret for authentication
-- `CLOUD_NAME`: Cloudinary cloud name
-- `CLOUD_API_KEY`: Cloudinary API key
-- `CLOUD_API_SECRET`: Cloudinary API secret
-- `MAP_TOKEN`: Mapbox access token
-- `PORT`: Server port (default: 8080)
-- `NODE_ENV`: Environment mode (development/production)
+| Variable | Description | Required |
+|---------|-------------|----------|
+| `ATLASDB_URL` | MongoDB connection string | Yes |
+| `SECRET` | Session secret for authentication | Yes |
+| `CLOUD_NAME` | Cloudinary cloud name | Yes |
+| `CLOUD_API_KEY` | Cloudinary API key | Yes |
+| `CLOUD_API_SECRET` | Cloudinary API secret | Yes |
+| `MAP_TOKEN` | Mapbox access token | Yes |
+| `PORT` | Server port (default: 8080) | No |
+| `NODE_ENV` | Environment mode (development/production) | No |
 
 ## Project Structure
 
@@ -91,7 +108,8 @@ STAYLO/
 ├── utils/               # Utility functions
 ├── views/               # EJS templates
 ├── public/              # Static files (CSS, JS, images)
-└── init/                # Database initialization
+├── tests/               # Test files
+└── README.md            # Project documentation
 ```
 
 ## API Endpoints
@@ -116,6 +134,29 @@ STAYLO/
 - `POST /login` - User login
 - `GET /logout` - User logout
 
+## Testing
+
+The application includes a comprehensive test suite using Jest and Supertest.
+
+### Running Tests
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage report
+npm run test:coverage
+```
+
+### Test Categories
+
+1. **Unit Tests**: Model validation tests
+2. **Integration Tests**: Route and controller tests
+3. **Authentication Tests**: User signup, login, and logout flows
+
 ## Technologies Used
 
 - **Backend**: Node.js, Express.js
@@ -126,6 +167,16 @@ STAYLO/
 - **Frontend**: EJS templates, Bootstrap 5
 - **Validation**: Joi
 - **Sessions**: Express-session with MongoDB store
+- **Testing**: Jest, Supertest
+
+## Security Considerations
+
+- Passwords are securely hashed using Passport.js
+- Sessions are configured with secure flags in production
+- Input validation and sanitization using Joi
+- XSS prevention through proper escaping in EJS templates
+- CSRF protection through proper form handling
+- Error messages are sanitized in production environments
 
 ## License
 
@@ -133,4 +184,4 @@ ISC License
 
 ## Author
 
-Seron Senapati 
+Seron Senapati

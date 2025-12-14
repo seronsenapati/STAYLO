@@ -20,12 +20,7 @@ const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
-const dbUrl = process.env.ATLASDB_URL;
-
-if (!dbUrl) {
-  console.error("ATLASDB_URL environment variable is not set");
-  process.exit(1);
-}
+const dbUrl = process.env.ATLASDB_URL || "mongodb://localhost:27017/staylo_dev";
 
 async function main() {
   try {
@@ -33,7 +28,13 @@ async function main() {
     console.log("Connected to MongoDB");
   } catch (err) {
     console.error("MongoDB connection error:", err);
-    process.exit(1);
+    // In production, we should exit since we can't run without a database
+    if (process.env.NODE_ENV === "production") {
+      console.error("Production database connection failed. Exiting...");
+      process.exit(1);
+    } else {
+      console.warn("Development mode: App may have limited functionality without database");
+    }
   }
 }
 
@@ -46,23 +47,30 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "/public")));
 
-const store = MongoStore.create({
-  mongoUrl: dbUrl,
-  crypto: {
-    secret: process.env.SECRET || "fallback-secret-key",
-  },
-  touchAfter: 24 * 60 * 60, // 24 hours
-});
+// Create store only if MongoDB connection is successful
+let store;
+try {
+  store = MongoStore.create({
+    mongoUrl: dbUrl,
+    crypto: {
+      secret: process.env.SECRET || "fallback-secret-key",
+    },
+    touchAfter: 24 * 60 * 60, // 24 hours
+  });
+} catch (err) {
+  console.warn("Failed to create MongoStore, using default memory store:", err.message);
+}
 
 const sessionOptions = {
-  store,
+  store: store || undefined, // Use memory store if MongoStore creation failed
   secret: process.env.SECRET || "fallback-secret-key",
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false, // Security improvement: don't save uninitialized sessions
   cookie: {
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     httpOnly: true,
+    secure: process.env.NODE_ENV === "production", // Secure cookies in production
   },
 };
 
@@ -94,8 +102,20 @@ app.all("*", (req, res, next) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
+  // Log error details in development but not in production
+  if (process.env.NODE_ENV !== "production") {
+    console.error(err.stack);
+  }
+  
+  // Set default values
   let { statusCode = 500, message = "Something went wrong" } = err;
-  res.status(statusCode).render("error.ejs", { err });
+  
+  // Don't expose internal error details in production
+  if (process.env.NODE_ENV === "production" && statusCode === 500) {
+    message = "Internal server error";
+  }
+  
+  res.status(statusCode).render("error.ejs", { err: { statusCode, message } });
 });
 
 const PORT = process.env.PORT || 8080;
