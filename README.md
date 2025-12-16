@@ -4,8 +4,6 @@ A full-stack web application for vacation rentals built with Node.js, Express, M
 
 **Live Demo: [https://staylo.up.railway.app](https://staylo.up.railway.app)**
 
-**Alternative Demo: [https://staylo-swvf.onrender.com/listings](https://staylo-swvf.onrender.com/listings)**
-
 ## Table of Contents
 - [Features](#features)
 - [Prerequisites](#prerequisites)
